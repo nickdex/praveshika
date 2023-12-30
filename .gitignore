@@ -1,0 +1,14 @@
+tailwindcss
+
+.portal/
+.clj-kondo/
+.cpcache/
+.lsp/
+.calva/
+.nrepl-port
+.shadow-cljs/
+
+node_modules/
+
+public/js/
+public/css/
