@@ -1,8 +1,19 @@
 (ns praveshika.core
-  (:require-macros [hiccups.core :refer [html]]))
+  (:require-macros [hiccups.core :refer [html]])
+  (:require [hiccups.runtime]))
+
 
 (defn- appendHTML [element htmlString]
   (.insertAdjacentHTML element "beforeend" htmlString))
+
+(defn- account-select []
+  (let [accounts ["ICICI"
+                  "SBI"
+                  "Sodexo:6102"]]
+    [:select#account.w-full {:name "account"}
+     (for [val accounts]
+       [:option {:value (str "Asset:Checking" val)} val])]))
+
 
 (defn app []
   (html
@@ -33,8 +44,7 @@
       [:div
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "account"}
         "Account"]
-       [:select#account.w-full {:name "account"}
-        [:option {:value ""}]]]
+       (account-select)]
       [:div
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "amount"}
         "Amount"]
