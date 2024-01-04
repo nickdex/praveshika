@@ -2,6 +2,14 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [hiccups.runtime]))
 
+(defn get-todays-date []
+  (let [today (js/Date.)
+        year (.getFullYear today)
+        month (str (inc (.getMonth today))) ; JavaScript months are 0-indexed
+        day (.getDate today)
+        formatted-month (if (< (count month) 2) (str "0" month) month)
+        formatted-day (if (< (count (str day)) 2) (str "0" day) day)]
+    (str year "-" formatted-month "-" formatted-day)))
 
 (defn- appendHTML [element htmlString]
   (.insertAdjacentHTML element "beforeend" htmlString))
@@ -27,7 +35,6 @@
      (for [val tag]
        [:option {:value val} val])]))
 
-
 (defn app []
   (html
    [:header.mt-2 [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
@@ -36,7 +43,7 @@
      [:div.col-span-full
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "date"}
        "Date"]
-      [:input#date {:type "date"}]]
+      [:input#date {:type "date" :value (get-todays-date)}]]
      [:div
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "payee"}
        "Payee"]
