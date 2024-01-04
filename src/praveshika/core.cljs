@@ -14,6 +14,19 @@
      (for [val accounts]
        [:option {:value (str "Asset:Checking" val)} val])]))
 
+(defn- payee-select []
+  (let [payee ["Swiggy"]]
+    [:select#payee.w-full {:name "payee"}
+     (for [val payee]
+       [:option val])]))
+
+(defn- tag-select []
+  (let [tag ["Friends"]]
+    [:select#tag.w-full {:name "tag"}
+     [:option {:value ""} "-"]
+     (for [val tag]
+       [:option {:value val} val])]))
+
 
 (defn app []
   (html
@@ -27,13 +40,11 @@
      [:div
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "payee"}
        "Payee"]
-      [:select#payee.w-full {:name "payee"}
-       [:option {:value ""}]]]
+      (payee-select)]
      [:div
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "tag"}
        "Tag"]
-      [:select#tag.w-full {:name "tag"}
-       [:option {:value ""}]]]]
+      (tag-select)]]
     [:div#postings
      [:div.flex.p-2
       [:h1.block.grow.font-medium.leading-6.text-gray-900.text-xl.text-center
