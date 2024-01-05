@@ -83,6 +83,6 @@
        [:input#comment {:type "text" :name "comment"}]]]]]))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
-(defn main []
-  (appendHTML (.getElementById js/document "app") (app)))
+(defn ^:dev/after-load main []
+  (aset (.getElementById js/document "app") "innerHTML" (app)))
   
