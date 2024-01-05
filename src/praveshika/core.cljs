@@ -11,9 +11,6 @@
         formatted-day (if (< (count (str day)) 2) (str "0" day) day)]
     (str year "-" formatted-month "-" formatted-day)))
 
-(defn- appendHTML [element htmlString]
-  (.insertAdjacentHTML element "beforeend" htmlString))
-
 (defn- account-select []
   (let [accounts ["ICICI"
                   "SBI"
