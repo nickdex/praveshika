@@ -2,6 +2,11 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [hiccups.runtime]))
 
+(def transactions (atom []))
+(defn load-transactions! []
+  (when-let [db-transactions (js/localStorage.getItem "transactions")]
+    (reset! transactions db-transactions)))
+
 (defn get-todays-date []
   (let [today (js/Date.)
         year (.getFullYear today)
@@ -31,6 +36,19 @@
      [:option {:value ""} "-"]
      (for [val tag]
        [:option {:value val} val])]))
+
+(defn- save-transaction []
+  (let [get-value (fn [element-id]
+                    (-> (.getElementById js/document element-id)
+                        .-value))
+        date (get-value "date")
+        payee (get-value "payee")
+        tag (get-value "tag")]
+    (swap! transactions conj
+           {:date date
+            :payee payee
+            :tag tag})))
+
 
 (defn app []
   (html
@@ -77,9 +95,14 @@
       [:div
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "comment"}
         "Comment"]
-       [:input#comment {:type "text" :name "comment"}]]]]]))
+       [:input#comment {:type "text" :name "comment"}]]]]
+    [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
+     {:type "button"} "Save"]]))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn ^:dev/after-load main []
-  (aset (.getElementById js/document "app") "innerHTML" (app)))
+  (load-transactions!)
+  (aset (.getElementById js/document "app") "innerHTML" (app))
+  (-> (.getElementById js/document "save-transaction")
+      (.addEventListener "click" save-transaction)))
   
