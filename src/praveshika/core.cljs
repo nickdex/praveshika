@@ -3,7 +3,9 @@
   (:require [hiccups.runtime]))
 
 (def transactions (atom []))
-(defn load-transactions! []
+(defn load-transactions!
+  "Load transactions from data store to app store"
+  []
   (when-let [db-transactions (js/localStorage.getItem "transactions")]
     (reset! transactions db-transactions)))
 
@@ -47,7 +49,9 @@
     (swap! transactions conj
            {:date date
             :payee payee
-            :tag tag})))
+            :tag tag})
+    ;; Save to data store
+    (js/localStorage.setItem "transactions" @transactions)))
 
 
 (defn app []
@@ -102,7 +106,9 @@
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn ^:dev/after-load main []
   (load-transactions!)
+  ;; Create App
   (aset (.getElementById js/document "app") "innerHTML" (app))
+  ;; Register Click Listeners
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" save-transaction)))
   
