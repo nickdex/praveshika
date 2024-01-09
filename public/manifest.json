@@ -1,0 +1,8 @@
+{
+    "name": "Arthya",
+    "description": "Record your transactions on the go",
+    "short_name": "Arthya",
+    "start_url": "http://localhost:8000",
+    "lang": "en_US",
+    "display": "standalone"
+}
