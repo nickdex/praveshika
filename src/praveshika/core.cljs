@@ -42,22 +42,24 @@
 
 (defn- all-transactions-page []
   (html
-   [:div#all-transactions-page
-    [:div.m-2
-     (for [transaction (->> @transactions
-                            (sort-by :date)
-                            reverse)]
-       [:div#transaction.border.p-4
-        [:div.grid.grid-cols-3
-         [:span.text-lg.text-green-700.font-bold (:date transaction)]
-         [:span (:payee transaction)]
-         [:span (:tag transaction)]]
-        [:ul.mt-2
-         (for [posting (:postings transaction)]
-           [:li.grid.grid-cols-2
-            [:span (:account posting)]
-            [:span (:amount posting)]
-            [:span.col-span-full (:comment posting)]])]])]]))
+   [:div#all-transactions-page.min-h-full.grid
+    (if-not (empty? @transactions)
+      [:div.m-2
+       (for [transaction (->> @transactions
+                              (sort-by :date)
+                              reverse)]
+         [:div#transaction.border.p-4
+          [:div.grid.grid-cols-3
+           [:span.text-lg.text-green-700.font-bold (:date transaction)]
+           [:span (:payee transaction)]
+           [:span (:tag transaction)]]
+          [:ul.mt-2
+           (for [posting (:postings transaction)]
+             [:li.grid.grid-cols-2
+              [:span (:account posting)]
+              [:span (:amount posting)]
+              [:span.col-span-full (:comment posting)]])]])]
+      [:div.text-center.text-gray-400.mt-5 "No Transactions"])]))
 
 (defn new-transaction-page []
   [:div#new-transaction-page.hidden
@@ -125,21 +127,27 @@
 
 (defn route [route-id]
   (let [all-element (.getElementById js/document "all-transactions-page")
-        new-element (.getElementById js/document "new-transaction-page")]
+        new-element (.getElementById js/document "new-transaction-page")
+        all-link (.getElementById js/document "all-transactions-link")
+        new-link (.getElementById js/document "new-transaction-link")]
     (condp = route-id
       :new (do (.add (.-classList all-element) "hidden")
-               (.remove (.-classList new-element) "hidden"))
+               (.remove (.-classList new-element) "hidden")
+               (.remove (.-classList all-link) "text-blue-600")
+               (.add (.-classList new-link) "text-blue-600"))
       :all (do (.add (.-classList new-element) "hidden")
-               (.remove (.-classList all-element) "hidden")))))
+               (.remove (.-classList all-element) "hidden")
+               (.remove (.-classList new-link) "text-blue-600")
+               (.add (.-classList all-link) "text-blue-600")))))
 
 (defn- tab-nav-bar []
-  [:ul.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-   [:li.me-2.grow
-    [:a#new-transaction-link.inline-block.p-4.text-blue-600.bg-gray-100.rounded-t-lg.active
+  [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
+   [:li#new-transaction-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-50
+    [:a.inline-block.p-4
      {:aria-current "page"}
      "New Transaction"]]
-   [:li.me-2.grow
-    [:a#all-transactions-link.inline-block.p-4.rounded-t-lg.hover:text-gray-600.hover:bg-gray-50
+   [:li#all-transactions-link.me-2.grow.rounded-t-lg.active:text-blue-600.active:bg-gray-100.cursor-pointer.hover:bg-gray-50
+    [:a.inline-block.p-4
      {:href "#"}
      "All Transactions"]]])
 
@@ -147,7 +155,7 @@
   (html
    [:header.mt-2 [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
    (tab-nav-bar)
-   [:div#shell
+   [:div#shell.min-h-full
     (new-transaction-page)
     (all-transactions-page)]))
 
