@@ -44,7 +44,9 @@
   (html
    [:div#all-transactions-page
     [:div.m-2
-     (for [transaction @transactions]
+     (for [transaction (->> @transactions
+                            (sort-by :date)
+                            reverse)]
        [:div#transaction.border.p-4
         [:div.grid.grid-cols-3
          [:span.text-lg.text-green-700.font-bold (:date transaction)]
