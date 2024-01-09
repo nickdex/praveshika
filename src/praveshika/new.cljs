@@ -30,7 +30,8 @@
        (map #(.-value %))
        (apply db/->Posting)))
 
-(defn save-transaction []
+(defn save-transaction [event]
+  (.. event -target -classList (add "bg-green-500"))
   (let [get-value (fn [element-id]
                     (-> (.getElementById js/document element-id)
                         .-value))
@@ -45,7 +46,8 @@
     ;; Update History
     (all/insert-latest-transaction transaction)
     ;; Save to data store
-    (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @db/transactions)))))
+    (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @db/transactions))))
+  (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
 
 (defn new-transaction-page []
   [:div#new-transaction-page
