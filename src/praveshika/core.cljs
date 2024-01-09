@@ -42,11 +42,23 @@
 
 (defn- all-transactions-page []
   (html
-   [:div#all-transactions-page.hidden
-    [:div.text-3xl] "Hi"]))
+   [:div#all-transactions-page
+    [:div.m-2
+     (for [transaction @transactions]
+       [:div#transaction.border.p-4
+        [:div.grid.grid-cols-3
+         [:span.text-lg.text-green-700.font-bold (:date transaction)]
+         [:span (:payee transaction)]
+         [:span (:tag transaction)]]
+        [:ul.mt-2
+         (for [posting (:postings transaction)]
+           [:li.grid.grid-cols-2
+            [:span (:account posting)]
+            [:span (:amount posting)]
+            [:span.col-span-full (:comment posting)]])]])]]))
 
 (defn new-transaction-page []
-  [:div#new-transaction-page
+  [:div#new-transaction-page.hidden
    [:form.px-4.space-y-5
     [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5
      [:div.col-span-full
@@ -103,7 +115,9 @@
     (swap! transactions conj
            {:date date
             :payee payee
-            :tag tag})
+            :tag tag
+            :postings [{:account "ICICI"
+                        :amount 10}]})
     ;; Save to data store
     (js/localStorage.setItem "transactions" @transactions)))
 
