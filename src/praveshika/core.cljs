@@ -54,6 +54,12 @@
   ;; Create App
   (aset (.getElementById js/document "app") "innerHTML" (app))
   ;; Register Click Listeners
+  (->> (.getElementsByName js/document "remove-button")
+       (map (fn [el]
+              (.addEventListener el
+                                 "click"
+                                 #(.. el -parentElement remove))))
+       doall)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction))
   (-> (.getElementById js/document "all-transactions-link")
