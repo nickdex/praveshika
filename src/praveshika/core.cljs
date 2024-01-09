@@ -1,6 +1,7 @@
 (ns praveshika.core
   (:require-macros [hiccups.core :refer [html]])
-  (:require [hiccups.runtime]))
+  (:require [clojure.string :as str]
+            [hiccups.runtime]))
 
 (def transactions (atom []))
 
@@ -26,9 +27,9 @@
   (let [accounts ["ICICI"
                   "SBI"
                   "Sodexo:6102"]]
-    [:select#account.w-full {:name "account"}
+    [:select.posting-input.w-full {:name "account"}
      (for [val accounts]
-       [:option {:value (str "Asset:Checking" val)} val])]))
+       [:option {:value (str "Asset:Checking:" val)} val])]))
 
 (defn- payee-select []
   (let [payee ["Swiggy"]]
@@ -95,12 +96,12 @@
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "amount"}
         "Amount"]
        [:div.relative.mt-2.rounded-md.shadow-sm
-        [:input#amount.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+        [:input.posting-input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
          {:type "number" :name "amount" :placeholder "0.00"}]
         [:div.absolute.inset-y-0.right-0.flex.items-center
          [:label.sr-only {:for "currency"}
           "Currency"]
-         [:select#currency.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
+         [:select.posting-input.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
           {:name "currency"}
           [:option "INR"]
           [:option "USD"]
@@ -108,9 +109,13 @@
       [:div
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "comment"}
         "Comment"]
-       [:input#comment {:type "text" :name "comment"}]]]]
+       [:input.posting-input {:type "text" :name "comment"}]]]]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
      {:type "button"} "Save"]]])
+
+(defn posting-values [posting]
+  (zipmap [:account :amount :currency :comment]
+          (map #(.-value %) (.getElementsByClassName posting "posting-input"))))
 
 (defn- save-transaction []
   (let [get-value (fn [element-id]
@@ -118,13 +123,14 @@
                         .-value))
         date (get-value "date")
         payee (get-value "payee")
-        tag (get-value "tag")]
+        tag (get-value "tag")
+        postings (.getElementsByName js/document "posting")
+        postings (map posting-values postings)]
     (swap! transactions conj
-           {:date date
+           {:date (str/replace date #"-" "/")
             :payee payee
             :tag tag
-            :postings [{:account "ICICI"
-                        :amount 10}]})
+            :postings postings})
     ;; Save to data store
     (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @transactions)))))
 
