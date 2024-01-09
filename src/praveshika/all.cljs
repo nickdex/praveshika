@@ -25,7 +25,10 @@
      (for [posting (:postings transaction)]
        [:li.grid.grid-cols-3
         [:span.col-span-2 (:account posting)]
-        [:span (:amount posting)]
+        [:span
+         [:span (:amount posting)]
+         "&nbsp"
+         [:span (:currency posting)]]
         [:span.col-span-full (:comment posting)]])]]))
 
 (defn insert-latest-transaction [transaction]
