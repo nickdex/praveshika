@@ -20,14 +20,14 @@
         all-link (.getElementById js/document "all-transactions-link")
         new-link (.getElementById js/document "new-transaction-link")]
     (condp = route-id
-      :new (do (.add (.-classList all-element) "hidden")
-               (.remove (.-classList new-element) "hidden")
-               (.remove (.-classList all-link) "text-blue-600")
-               (.add (.-classList new-link) "text-blue-600"))
-      :all (do (.add (.-classList new-element) "hidden")
-               (.remove (.-classList all-element) "hidden")
-               (.remove (.-classList new-link) "text-blue-600")
-               (.add (.-classList all-link) "text-blue-600")))))
+      :new (do (.. all-element -classList (add "hidden"))
+               (.. new-element -classList (remove "hidden"))
+               (.. all-link -classList (remove "text-blue-600" "bg-gray-100"))
+               (.. new-link -classList (add "text-blue-600" "bg-gray-100")))
+      :all (do (.. new-element -classList (add "hidden"))
+               (.. all-element -classList (remove "hidden"))
+               (.. new-link -classList (remove "text-blue-600" "bg-gray-100"))
+               (.. all-link -classList (add "text-blue-600" "bg-gray-100"))))))
 
 (defn- tab-nav-bar []
   [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
