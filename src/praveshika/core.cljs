@@ -31,11 +31,11 @@
 
 (defn- tab-nav-bar []
   [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-   [:li#new-transaction-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-50
+   [:li#new-transaction-link.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
     [:a.inline-block.p-4
      {:aria-current "page"}
      "New Transaction"]]
-   [:li#all-transactions-link.me-2.grow.rounded-t-lg.active:text-blue-600.active:bg-gray-100.cursor-pointer.hover:bg-gray-50
+   [:li#all-transactions-link.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
     [:a.inline-block.p-4
      {:href "#"}
      "All Transactions"]]])
