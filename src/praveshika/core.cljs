@@ -7,8 +7,11 @@
 (defn load-transactions!
   "Load transactions from data store to app store"
   []
-  (when-let [db-transactions (js/localStorage.getItem "transactions")]
-    (reset! transactions db-transactions)))
+  (when-let [db-transactions (-> "transactions"
+                                 js/localStorage.getItem
+                                 js/JSON.parse
+                                 (js->clj :keywordize-keys true))]
+    (reset! transactions  db-transactions)))
 
 (defn get-todays-date []
   (let [today (js/Date.)
@@ -123,7 +126,7 @@
             :postings [{:account "ICICI"
                         :amount 10}]})
     ;; Save to data store
-    (js/localStorage.setItem "transactions" @transactions)))
+    (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @transactions)))))
 
 (defn route [route-id]
   (let [all-element (.getElementById js/document "all-transactions-page")
