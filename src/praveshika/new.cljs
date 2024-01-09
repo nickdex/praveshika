@@ -8,7 +8,7 @@
   (let [accounts ["ICICI"
                   "SBI"
                   "Sodexo:6102"]]
-    [:select.posting-input.w-full {:name "account"}
+    [:select#account.posting-input.w-full {:name "account"}
      (for [val accounts]
        [:option {:value (str "Asset:Checking:" val)} val])]))
 
@@ -78,12 +78,12 @@
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "amount"}
         "Amount"]
        [:div.relative.mt-2.rounded-md.shadow-sm
-        [:input.posting-input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
-         {:type "number" :name "amount" :placeholder "0.00"}]
+        [:input#amount.posting-input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+         {:type "number"  :placeholder "0.00"}]
         [:div.absolute.inset-y-0.right-0.flex.items-center
          [:label.sr-only {:for "currency"}
           "Currency"]
-         [:select.posting-input.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
+         [:select#currency.posting-input.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
           {:name "currency"}
           [:option "INR"]
           [:option "USD"]
@@ -91,6 +91,6 @@
       [:div
        [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "comment"}
         "Comment"]
-       [:input.posting-input {:type "text" :name "comment"}]]]]
+       [:input#comment.posting-input {:type "text" :name "comment"}]]]]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
      {:type "button"} "Save"]]])
