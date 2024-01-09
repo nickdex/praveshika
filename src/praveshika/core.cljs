@@ -54,6 +54,8 @@
   ;; Create App
   (aset (.getElementById js/document "app") "innerHTML" (app))
   ;; Register Click Listeners
+  (-> (js/document.getElementById "add-posting")
+      (.addEventListener "click" new/add-posting))
   (->> (.getElementsByName js/document "remove-button")
        (map (fn [el]
               (.addEventListener el
