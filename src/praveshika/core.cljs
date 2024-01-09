@@ -45,7 +45,7 @@
 
 (defn- all-transactions-page []
   (html
-   [:div#all-transactions-page.min-h-full.grid
+   [:div#all-transactions-page.min-h-full.grid.hidden
     (if-not (empty? @transactions)
       [:div.m-2
        (for [transaction (->> @transactions
@@ -65,7 +65,7 @@
       [:div.text-center.text-gray-400.mt-5 "No Transactions"])]))
 
 (defn new-transaction-page []
-  [:div#new-transaction-page.hidden
+  [:div#new-transaction-page
    [:form.px-4.space-y-5
     [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5
      [:div.col-span-full
