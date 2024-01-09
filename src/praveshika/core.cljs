@@ -4,6 +4,8 @@
             [hiccups.runtime]))
 
 (def transactions (atom []))
+(defrecord Posting [account amount currency comment])
+(defrecord Transaction [date payee tag postings])
 
 (defn load-transactions!
   "Load transactions from data store to app store"
@@ -44,26 +46,28 @@
      (for [val tag]
        [:option {:value val} val])]))
 
+(defn transactions-list-item [transaction]
+  (html
+   [:li#transaction.border.p-4
+    [:div.grid.grid-cols-3
+     [:span.text-lg.text-green-700.font-bold (:date transaction)]
+     [:span (:payee transaction)]
+     [:span (:tag transaction)]]
+    [:ul.mt-2
+     (for [posting (:postings transaction)]
+       [:li.grid.grid-cols-3
+        [:span.col-span-2 (:account posting)]
+        [:span (:amount posting)]
+        [:span.col-span-full (:comment posting)]])]]))
+
 (defn- all-transactions-page []
   (html
    [:div#all-transactions-page.min-h-full.grid.hidden
-    (if-not (empty? @transactions)
-      [:div.m-2
-       (for [transaction (->> @transactions
-                              (sort-by :date)
-                              reverse)]
-         [:div#transaction.border.p-4
-          [:div.grid.grid-cols-3
-           [:span.text-lg.text-green-700.font-bold (:date transaction)]
-           [:span (:payee transaction)]
-           [:span (:tag transaction)]]
-          [:ul.mt-2
-           (for [posting (:postings transaction)]
-             [:li.grid.grid-cols-2
-              [:span (:account posting)]
-              [:span (:amount posting)]
-              [:span.col-span-full (:comment posting)]])]])]
-      [:div.text-center.text-gray-400.mt-5 "No Transactions"])]))
+    [:ul#transactions.m-2
+     (for [transaction (->> @transactions
+                            (sort-by :date)
+                            reverse)]
+       (transactions-list-item transaction))]]))
 
 (defn new-transaction-page []
   [:div#new-transaction-page
@@ -114,23 +118,29 @@
      {:type "button"} "Save"]]])
 
 (defn posting-values [posting]
-  (zipmap [:account :amount :currency :comment]
-          (map #(.-value %) (.getElementsByClassName posting "posting-input"))))
+  (->> (.getElementsByClassName posting "posting-input")
+       (map #(.-value %))
+       (apply ->Posting)))
+
+(defn- insert-latest-transaction [transaction]
+  (.insertAdjacentHTML (js/document.getElementById "transactions")
+                       "afterbegin"
+                       (praveshika.core/transactions-list-item transaction)))
 
 (defn- save-transaction []
   (let [get-value (fn [element-id]
                     (-> (.getElementById js/document element-id)
                         .-value))
-        date (get-value "date")
+        date (str/replace (get-value "date") #"-" "/")
         payee (get-value "payee")
         tag (get-value "tag")
-        postings (.getElementsByName js/document "posting")
-        postings (map posting-values postings)]
+        postings (->> (.getElementsByName js/document "posting")
+                      (map posting-values))
+        transaction (Transaction. date payee tag postings)]
     (swap! transactions conj
-           {:date (str/replace date #"-" "/")
-            :payee payee
-            :tag tag
-            :postings postings})
+           transaction)
+    ;; Update History
+    (insert-latest-transaction transaction)
     ;; Save to data store
     (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @transactions)))))
 
