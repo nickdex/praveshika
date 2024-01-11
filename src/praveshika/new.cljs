@@ -31,7 +31,9 @@
        (map #(.-value %))
        (apply db/make-posting)))
 
-(defn get-transaction! []
+(defn create-transaction
+  "Creates a transaction object from view"
+  []
   (let [get-value (fn [element-id]
                     (-> (.getElementById js/document element-id)
                         .-value))
@@ -44,7 +46,7 @@
 
 (defn save-transaction! [event]
   (.. event -target -classList (add "bg-green-500"))
-  (let [transaction (get-transaction!)]
+  (let [transaction (create-transaction)]
     ;; Update history
     (all/insert-latest-transaction! transaction)
     ;; Update db
