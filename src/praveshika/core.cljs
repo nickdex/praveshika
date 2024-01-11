@@ -45,7 +45,7 @@
   ;; Register Click Listeners
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
-  (doseq [remove-button (.getElementsByName js/document "remove-button")]
+  (doseq [remove-button (js/document.querySelectorAll "button.remove")]
     (.addEventListener remove-button
                        "click"
                        #(all/remove-transaction! % remove-button)))

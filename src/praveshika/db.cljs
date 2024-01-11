@@ -21,11 +21,24 @@
   []
   (t/read r (js/localStorage.getItem "transactions")))
 
+(defn- reset-transactions!
+  [transactions]
+  (->> transactions
+       vec
+       (t/write w)
+       (js/localStorage.setItem "transactions")))
+
+(defn remove-transaction!
+  "Remove a transaction from data store"
+  [transaction]
+  (->> (get-all-transactions)
+       (remove #(= transaction %))
+       reset-transactions!))
+  
 (defn prepend-transaction!
   "Add latest transaction on top in data store"
   [transaction]
   (->> (get-all-transactions)
        (cons transaction)
-       vec
-       (t/write w)
-       (js/localStorage.setItem "transactions")))
+       reset-transactions!))
+       
