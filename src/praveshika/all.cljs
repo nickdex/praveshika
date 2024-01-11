@@ -2,6 +2,10 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [praveshika.db :as db]))
 
+(defn remove-transaction! [e remove-button]
+  (.preventDefault e)
+  (.. remove-button -parentElement remove))
+
 (defn transactions-list-item [transaction]
   (html
    [:li#transaction.border.p-4

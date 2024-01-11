@@ -44,11 +44,11 @@
   (aset (.getElementById js/document "app") "innerHTML" (app))
   ;; Register Click Listeners
   (-> (js/document.getElementById "add-posting")
-      (.addEventListener "click" new/add-posting))
+      (.addEventListener "click" new/add-posting!))
   (doseq [remove-button (.getElementsByName js/document "remove-button")]
     (.addEventListener remove-button
                        "click"
-                       #(.. remove-button -parentElement remove)))
+                       #(all/remove-transaction! % remove-button)))
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
   (-> (.getElementById js/document "all-transactions-link")

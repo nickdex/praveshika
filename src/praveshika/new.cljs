@@ -78,7 +78,8 @@
       "Comment"]
      [:input#comment.posting-input {:type "text" :name "comment"}]]]))
 
-(defn add-posting []
+(defn add-posting! [e]
+  (.preventDefault e)
   (.insertAdjacentHTML (js/document.getElementById "postings") "beforeend" (posting)))
 
 (defn new-transaction-page []
