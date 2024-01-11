@@ -17,7 +17,7 @@
    :comment comment})
 
 (defn get-all-transactions
-  "Fetcha ll transactions from data store"
+  "Fetch all transactions from data store"
   []
   (t/read r (js/localStorage.getItem "transactions")))
 
