@@ -1,12 +1,31 @@
-(ns praveshika.db)
+(ns praveshika.db
+  (:require [cognitect.transit :as t]))
 
-(def transactions (atom []))
-(defrecord Posting [account amount currency comment])
-(defrecord Transaction [date payee tag postings])
+(def r (t/reader :json))
+(def w (t/writer :json))
 
-#_{:clj-kondo/ignore [:redefined-var]}
-(defn ->Posting [account amount currency comment]
-  (Posting. account
-            (if (empty? amount) 0 amount)
-            currency
-            comment))
+(defn make-transaction [date payee tag postings]
+  {:date date
+   :payee payee
+   :tag tag
+   :postings (vec postings)})
+
+(defn make-posting [account amount currency comment]
+  {:account account
+   :amount (if (empty? amount) 0 amount)
+   :currency currency
+   :comment comment})
+
+(defn get-all-transactions
+  "Fetcha ll transactions from data store"
+  []
+  (t/read r (js/localStorage.getItem "transactions")))
+
+(defn prepend-transaction!
+  "Add latest transaction on top in data store"
+  [transaction]
+  (->> (get-all-transactions)
+       (cons transaction)
+       vec
+       (t/write w)
+       (js/localStorage.setItem "transactions")))

@@ -2,17 +2,7 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [hiccups.runtime]
             [praveshika.all :as all]
-            [praveshika.db :as db]
             [praveshika.new :as new]))
-
-(defn load-transactions!
-  "Load transactions from data store to app store"
-  []
-  (when-let [db-transactions (-> "transactions"
-                                 js/localStorage.getItem
-                                 js/JSON.parse
-                                 (js->clj :keywordize-keys true))]
-    (reset! db/transactions  db-transactions)))
 
 (defn route [route-id]
   (let [all-element (.getElementById js/document "all-transactions-page")
@@ -50,20 +40,17 @@
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn ^:dev/after-load main []
-  (load-transactions!)
   ;; Create App
   (aset (.getElementById js/document "app") "innerHTML" (app))
   ;; Register Click Listeners
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting))
-  (->> (.getElementsByName js/document "remove-button")
-       (map (fn [el]
-              (.addEventListener el
-                                 "click"
-                                 #(.. el -parentElement remove))))
-       doall)
+  (doseq [remove-button (.getElementsByName js/document "remove-button")]
+    (.addEventListener remove-button
+                       "click"
+                       #(.. remove-button -parentElement remove)))
   (-> (.getElementById js/document "save-transaction")
-      (.addEventListener "click" new/save-transaction))
+      (.addEventListener "click" new/save-transaction!))
   (-> (.getElementById js/document "all-transactions-link")
       (.addEventListener "click" #(route :all)))
   (-> (.getElementById js/document "new-transaction-link")

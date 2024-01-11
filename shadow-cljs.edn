@@ -1,5 +1,6 @@
 {:source-paths ["src"]
- :dependencies [[hiccups "0.3.0"]]
+ :dependencies [[hiccups "0.3.0"]
+                [com.cognitect/transit-cljs "0.8.280"]]
  :dev-http {8000 "public"}
  :builds {:app {:target :browser
                 :output-dir "public/js"

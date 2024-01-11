@@ -26,13 +26,12 @@
      (for [val tag]
        [:option {:value val} val])]))
 
-(defn posting-values [posting]
+(defn posting-values! [posting]
   (->> (.getElementsByClassName posting "posting-input")
        (map #(.-value %))
-       (apply db/->Posting)))
+       (apply db/make-posting)))
 
-(defn save-transaction [event]
-  (.. event -target -classList (add "bg-green-500"))
+(defn get-transaction! []
   (let [get-value (fn [element-id]
                     (-> (.getElementById js/document element-id)
                         .-value))
@@ -40,14 +39,16 @@
         payee (get-value "payee")
         tag (get-value "tag")
         postings (->> (.getElementsByName js/document "posting")
-                      (map posting-values))
-        transaction (db/Transaction. date payee tag postings)]
-    (swap! db/transactions conj
-           transaction)
-    ;; Update History
-    (all/insert-latest-transaction transaction)
-    ;; Save to data store
-    (js/localStorage.setItem "transactions" (js/JSON.stringify (clj->js @db/transactions))))
+                      (map posting-values!))]
+    (db/make-transaction date payee tag postings)))
+
+(defn save-transaction! [event]
+  (.. event -target -classList (add "bg-green-500"))
+  (let [transaction (get-transaction!)]
+    ;; Update history
+    (all/insert-latest-transaction! transaction)
+    ;; Update db
+    (db/prepend-transaction! transaction))
   (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
 
 (defn- posting []

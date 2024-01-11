@@ -31,7 +31,7 @@
          [:span (:currency posting)]]
         [:span.col-span-full (:comment posting)]])]]))
 
-(defn insert-latest-transaction [transaction]
+(defn insert-latest-transaction! [transaction]
   (.insertAdjacentHTML (js/document.getElementById "transactions")
                        "afterbegin"
                        (transactions-list-item transaction)))
@@ -40,7 +40,5 @@
   (html
    [:div#all-transactions-page.min-h-full.grid.hidden
     [:ul#transactions.m-2
-     (for [transaction (->> @db/transactions
-                            (sort-by :date)
-                            reverse)]
+     (for [transaction (db/get-all-transactions)]
        (transactions-list-item transaction))]]))
