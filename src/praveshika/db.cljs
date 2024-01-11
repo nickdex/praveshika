@@ -12,7 +12,7 @@
 
 (defn make-posting [account amount currency comment]
   {:account account
-   :amount (if (empty? amount) 0 amount)
+   :amount (if (empty? amount) 0 (js/parseInt amount))
    :currency currency
    :comment comment})
 
@@ -24,6 +24,8 @@
 (defn- reset-transactions!
   [transactions]
   (->> transactions
+       (sort-by :date)
+       reverse
        vec
        (t/write w)
        (js/localStorage.setItem "transactions")))
@@ -34,7 +36,7 @@
   (->> (get-all-transactions)
        (remove #(= transaction %))
        reset-transactions!))
-  
+
 (defn prepend-transaction!
   "Add latest transaction on top in data store"
   [transaction]

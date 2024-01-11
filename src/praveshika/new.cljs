@@ -46,11 +46,7 @@
 
 (defn save-transaction! [event]
   (.. event -target -classList (add "bg-green-500"))
-  (let [transaction (create-transaction)]
-    ;; Update history
-    (all/insert-latest-transaction! transaction)
-    ;; Update db
-    (db/prepend-transaction! transaction))
+  (all/add-transaction! (create-transaction))
   (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
 
 (defn- posting []

@@ -2,22 +2,6 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [praveshika.db :as db]))
 
-(defn remove-transaction! [e remove-button]
-  (.preventDefault e)
-  (js/console.debug "remove-transaction entered")
-  (let [transaction-container (.-parentElement remove-button)
-        values (map #(.-textContent %) (.querySelectorAll transaction-container "span"))
-        postings (->> values
-                      (drop 3)
-                      (partition 4)
-                      (map #(apply db/make-posting %)))
-        transaction (->> postings
-                         (conj (take 3 values))
-                         (apply db/make-transaction))]
-    (js/console.debug "removing transaction" transaction)
-    (.remove transaction-container)
-    (db/remove-transaction! transaction)))
-
 (defn transactions-list-item [transaction]
   (html
    [:li.transaction-container.border.p-4
@@ -46,17 +30,49 @@
          [:span (:currency posting)]]
         [:span.col-span-full (:comment posting)]])]]))
 
-(defn prepend-transaction! [transaction]
-  (.insertAdjacentHTML (js/document.getElementById "transactions")
-                       "afterbegin"
-                       (transactions-list-item transaction)))
+(defn ->transaction 
+  "Creates transaction object from transaction list item"
+  [container-element] 
+  (let [values (->> (.querySelectorAll container-element "span")
+                    (map #(.-textContent %)))
+        postings (->> values
+                      (drop 3)
+                      (partition 4)
+                      (map #(apply db/make-posting %)))
+        transaction (->> postings
+                         (conj (vec (take 3 values)))
+                         (apply db/make-transaction))]
+    transaction))
 
-(defn insert-latest-transaction! [transaction]
-  ;; Update View
-  (prepend-transaction! transaction)
-  ;; Attcha click listener
-  (let [remove-button (js/document.querySelector  "#transactions > :first-child button.remove")]
-    (.addEventListener remove-button "click" #(remove-transaction! % remove-button))))
+(defn remove-transaction!
+  ([remove-button]
+   (let [transaction-container (.-parentElement remove-button)
+         transaction (->transaction transaction-container)]
+     (js/console.debug "removing transaction" transaction)
+     (.remove transaction-container)
+     (db/remove-transaction! transaction)))
+  ([e remove-button]
+   (.preventDefault e)
+   (js/console.debug "remove-transaction entered")
+   (remove-transaction! remove-button)))
+
+(defn register-remove-button-click-listeners []
+  (doseq [remove-button (js/document.querySelectorAll "button.remove")]
+    (.addEventListener remove-button
+                       "click"
+                       #(remove-transaction! % remove-button))))
+
+(defn refresh!
+  "Renders all records in history"
+  []
+  (set! (.-innerHTML (js/document.getElementById "transactions"))
+        (html
+         (map transactions-list-item (db/get-all-transactions))))
+  (register-remove-button-click-listeners))
+
+(defn add-transaction! [transaction]
+  (db/prepend-transaction! transaction)
+  (refresh!))
 
 (defn all-transactions-page []
   (html
