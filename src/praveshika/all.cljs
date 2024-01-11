@@ -5,7 +5,7 @@
 (defn transactions-list-item [transaction]
   (html
    [:li#transaction.border.p-4
-    [:button.p-1.bg-red-400.text-white.float-right
+    [:button.p-1.bg-red-400.text-white.float-right.active:bg-red-600
      {:name "remove-button"}
      [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
                     :fill "none"
