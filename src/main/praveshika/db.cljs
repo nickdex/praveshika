@@ -10,7 +10,7 @@
   ([account amount currency comment]
    {:account account
     :amount (if (= "" amount) 0 (js/parseInt amount))
-    :currency currency
+    :currency (if-not currency "INR" currency)
     :comment (if (empty? comment) nil comment)}))
 
 (defn make-transaction
@@ -26,8 +26,7 @@
 (defn get-all-transactions
   "Fetch all transactions from data store"
   []
-  (->> "transactions"
-       js/localStorage.getItem
+  (->> (js/localStorage.getItem "transactions")
        (t/read r)
        (map make-transaction)))
 

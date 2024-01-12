@@ -78,13 +78,15 @@
 
 (defn copy-transactions!
   "Copies all transations in hledger style"
-  [event]
-  (.preventDefault event)
-  (.. event -target -classList (add "bg-green-500"))
-  (let [transactions (db/get-all-transactions)]
-    (js/console.debug "Copying" (count transactions))
-    (js/navigator.clipboard.writeText (common/->hledger-transactions transactions)))
-  (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
+  ([event]
+   (.preventDefault event)
+   (.. event -target -classList (add "bg-green-500"))
+   (copy-transactions!)
+   (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
+  ([]
+   (let [transactions (db/get-all-transactions)]
+     (js/console.debug "Copying" (count transactions))
+     (js/navigator.clipboard.writeText (common/->hledger-transactions transactions)))))
 
 (defn all-transactions-page []
   (html
