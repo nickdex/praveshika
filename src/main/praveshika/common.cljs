@@ -9,17 +9,23 @@
         formatted-day (if (< (count (str day)) 2) (str "0" day) day)]
     (str year "-" formatted-month "-" formatted-day)))
 
+(defn- separator
+  ([]
+   (separator 1))
+  ([times]
+   (apply str (repeat (* times 4) " "))))
+
 (defn ->hledger-transaction
   [transaction]
   (let [{:keys [date payee tag postings]} transaction
         ->hledger-posting (fn [{:keys [account amount currency comment]}]
-                            (str "    "
-                                 account "   "
+                            (str (separator)
+                                 account (separator)
                                  amount " "
                                  currency
-                                 (when comment (str "\n    ; " comment))))]
+                                 (when comment (str "\n" (separator 2)  "; "comment))))]
     (str date " " payee (when tag (str " ; " tag))
-         (when postings 
+         (when postings
            (str "\n"
                 (->> postings
                      (map ->hledger-posting)
