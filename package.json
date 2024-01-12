@@ -1,5 +1,20 @@
 {
+  "scripts": {
+    "shadow:watch": "shadow-cljs -d cider/cider-nrepl:0.28.5 watch :app",
+    "postcss:watch": "cross-env postcss src/css/tailwind.css -o ./public/css/main.css --verbose -w",
+    "dev": "run-p -l *:watch"
+  },
   "devDependencies": {
-    "shadow-cljs": "^2.26.4"
+    "autoprefixer": "^10.4.16",
+    "cross-env": "^7.0.3",
+    "cssnano": "^6.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.33",
+    "postcss-cli": "^11.0.0",
+    "shadow-cljs": "^2.26.4",
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.7"
   }
 }
