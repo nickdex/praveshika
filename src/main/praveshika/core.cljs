@@ -59,7 +59,7 @@
   (html
    [:header.mt-2 [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
    (tab-nav-bar)
-   [:div#shell.min-h-full
+   [:main
     (new/new-transaction-page)
     (all/all-transactions-page)
     (settings/page)]))
