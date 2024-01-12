@@ -79,7 +79,8 @@
   (.insertAdjacentHTML (js/document.getElementById "postings") "beforeend" (posting)))
 
 (defn new-transaction-page []
-  [:div#new-transaction.page
+  [:div.page
+   {:data-link "new"}
    [:form.px-4.space-y-5
     [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5
      [:div.col-span-full

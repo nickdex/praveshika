@@ -4,28 +4,46 @@
             [praveshika.all :as all]
             [praveshika.new :as new]))
 
-(defn route [route-id]
-  (let [all-element (.getElementById js/document "all-transactions-page")
-        new-element (.getElementById js/document "new-transaction-page")
-        all-link (.getElementById js/document "all-transactions-link")
-        new-link (.getElementById js/document "new-transaction-link")]
-    (condp = route-id
-      :new (do (.. all-element -classList (add "hidden"))
-               (.. new-element -classList (remove "hidden"))
-               (.. all-link -classList (remove "text-blue-600" "bg-gray-100"))
-               (.. new-link -classList (add "text-blue-600" "bg-gray-100")))
-      :all (do (.. new-element -classList (add "hidden"))
-               (.. all-element -classList (remove "hidden"))
-               (.. new-link -classList (remove "text-blue-600" "bg-gray-100"))
-               (.. all-link -classList (add "text-blue-600" "bg-gray-100"))))))
+(defn set-active-link [el state]
+  (if state
+    (.. el -classList (add "text-blue-600" "bg-gray-100"))
+    (.. el -classList (remove "text-blue-600" "bg-gray-100"))))
+
+(defn set-active-page [el state]
+  (if state
+    (.. el -classList (remove "hidden"))
+    (.. el -classList (add "hidden"))))
+
+(defn route [event]
+  (.preventDefault event)
+  (let [pages (js/document.querySelectorAll ".page")
+        links (js/document.querySelectorAll ".nav-link")
+        clicked-link (.-currentTarget event)
+        match-data-link (fn [element]
+                          (=
+                           (.. clicked-link -dataset -link)
+                           (.. element -dataset -link)))
+        {matched-pages true
+         unmatched-pages false} (->> pages
+                                     (group-by match-data-link))
+        unmatched-links (->> links
+                             (remove match-data-link))]
+    (doseq [un unmatched-pages]
+      (set-active-page un false))
+    (doseq [link unmatched-links]
+      (set-active-link link false))
+    (set-active-link clicked-link true)
+    (set-active-page (first matched-pages ) true)))
 
 (defn- tab-nav-bar []
   [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-   [:li#new-transaction-link.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
+   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
+    {:data-link "new"}
     [:a.inline-block.p-4
      {:aria-current "page"}
      "New Transaction"]]
-   [:li#all-transactions-link.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    {:data-link "all"}
     [:a.inline-block.p-4
      {:href "#"}
      "All Transactions"]]])
@@ -48,9 +66,7 @@
   (all/register-remove-button-click-listeners)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
-  (-> (.getElementById js/document "all-transactions-link")
-      (.addEventListener "click" #(route :all)))
+  (doseq [nav-link (js/document.querySelectorAll ".nav-link")]
+    (.addEventListener nav-link "click" route))
   (-> (js/document.getElementById "copy")
-      (.addEventListener "click" all/copy-transactions!))
-  (-> (.getElementById js/document "new-transaction-link")
-      (.addEventListener "click" #(route :new))))
+      (.addEventListener "click" all/copy-transactions!)))
