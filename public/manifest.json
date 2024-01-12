@@ -1,7 +1,7 @@
 {
-    "name": "Arthya",
+    "name": "Praveshika",
     "description": "Record your transactions on the go",
-    "short_name": "Arthya",
+    "short_name": "Praveshika",
     "start_url": "http://localhost:8000",
     "lang": "en_US",
     "display": "standalone"
