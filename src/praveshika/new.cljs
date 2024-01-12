@@ -9,7 +9,7 @@
   (let [accounts ["ICICI"
                   "SBI"
                   "Sodexo:6102"]]
-    [:select#account.posting-input.w-full {:name "account"}
+    [:select#account.w-full {:name "account"}
      (for [val accounts]
        [:option {:value (str "Asset:Checking:" val)} val])]))
 
@@ -27,7 +27,7 @@
        [:option {:value val} val])]))
 
 (defn posting-values! [posting]
-  (->> (.getElementsByClassName posting "posting-input")
+  (->> (.querySelectorAll posting "#postings input, #postings select")
        (map #(.-value %))
        (apply db/make-posting)))
 
@@ -40,7 +40,7 @@
         date (str/replace (get-value "date") #"-" "/")
         payee (get-value "payee")
         tag (get-value "tag")
-        postings (->> (.getElementsByName js/document "posting")
+        postings (->> (js/document.querySelectorAll "li.posting")
                       (map posting-values!))]
     (db/make-transaction date payee tag postings)))
 
@@ -51,30 +51,25 @@
 
 (defn- posting []
   (html
-   [:li#posting.my-1.col-span-full.p-4.border.border-neutral-300.space-y-3
-    {:name "posting"}
-    [:div
-     [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "account"}
-      "Account"]
+   [:li.posting.my-1.col-span-full.p-4.border.border-neutral-300.space-y-3
+    [:label.block.text-sm.font-medium.leading-6.text-gray-900
+     "Account"
      (account-select)]
-    [:div
-     [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "amount"}
-      "Amount"]
-     [:div.relative.mt-2.rounded-md.shadow-sm
-      [:input#amount.posting-input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
-       {:type "number" :placeholder "0.00"}]
-      [:div.absolute.inset-y-0.right-0.flex.items-center
-       [:label.sr-only {:for "currency"}
-        "Currency"]
-       [:select#currency.posting-input.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
-        {:name "currency"}
-        [:option "INR"]
-        [:option "USD"]
-        [:option "EUR"]]]]]
-    [:div
-     [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "comment"}
-      "Comment"]
-     [:input#comment.posting-input {:type "text" :name "comment"}]]]))
+    [:div.relative.mt-2.rounded-md.shadow-sm
+     [:label.block.text-sm.font-medium.leading-6.text-gray-900
+      "Amount"
+      [:input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+       {:type "number" :placeholder "0.00"}]]
+     [:label.absolute.right-0.top-7
+      [:span.sr-only
+       "Currency"]
+      [:select.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
+       [:option "INR"]
+       [:option "USD"]
+       [:option "EUR"]]]]
+    [:label.block.text-sm.font-medium.leading-6.text-gray-900
+     [:span.block "Comment"]
+     [:input {:type "text"}]]]))
 
 (defn add-posting! [e]
   (.preventDefault e)
