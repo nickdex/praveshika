@@ -2,7 +2,7 @@
 
 (def payees (flatten (repeat 5 ["Swiggy" "Zomato" "Shoppy Mart"])))
 (defn page []
-  [:div#settings.page.p-4
+  [:div#settings.page.p-4.hidden
    {:data-link "settings"}
    [:label.mr-2 "Payee"
     [:input.ml-2 {:placeholder "Enter Payee"}]]
