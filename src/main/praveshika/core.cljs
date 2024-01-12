@@ -2,7 +2,8 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [hiccups.runtime]
             [praveshika.all :as all]
-            [praveshika.new :as new]))
+            [praveshika.new :as new]
+            [praveshika.settings :as settings]))
 
 (defn set-active-link [el state]
   (if state
@@ -41,12 +42,17 @@
     {:data-link "new"}
     [:a.inline-block.p-4
      {:aria-current "page"}
-     "New Transaction"]]
+     "New"]]
    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
     {:data-link "all"}
     [:a.inline-block.p-4
      {:href "#"}
-     "All Transactions"]]])
+     "History"]]
+   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    {:data-link "settings"}
+    [:a.inline-block.p-4
+     {:href "#"}
+     "Settings"]]])
 
 (defn app []
   (html
@@ -54,7 +60,8 @@
    (tab-nav-bar)
    [:div#shell.min-h-full
     (new/new-transaction-page)
-    (all/all-transactions-page)]))
+    (all/all-transactions-page)
+    (settings/page)]))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn ^:dev/after-load main []
