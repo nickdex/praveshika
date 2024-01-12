@@ -18,7 +18,7 @@
 (defn route [event]
   (.preventDefault event)
   (let [pages (js/document.querySelectorAll ".page")
-        links (js/document.querySelectorAll ".nav-link")
+        links (js/document.querySelectorAll "nav li")
         clicked-link (.-currentTarget event)
         match-data-link (fn [element]
                           (=
@@ -39,17 +39,17 @@
 (defn- tab-nav-bar []
   [:nav
    [:ul.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
+    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
      {:data-link "new"}
      [:a.inline-block.p-4
       {:aria-current "page"}
       "New"]]
-    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
      {:data-link "all"}
      [:a.inline-block.p-4
       {:href "#"}
       "History"]]
-    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
      {:data-link "settings"}
      [:a.inline-block.p-4
       {:href "#"}
@@ -74,7 +74,7 @@
   (all/register-remove-button-click-listeners)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
-  (doseq [nav-link (js/document.querySelectorAll ".nav-link")]
+  (doseq [nav-link (js/document.querySelectorAll "nav li")]
     (.addEventListener nav-link "click" route))
   (-> (js/document.getElementById "copy")
       (.addEventListener "click" all/copy-transactions!)))
