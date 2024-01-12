@@ -9,7 +9,7 @@
   (let [accounts ["ICICI"
                   "SBI"
                   "Sodexo:6102"]]
-    [:select#account.w-full {:name "account"}
+    [:select.w-full {:name "account"}
      (for [val accounts]
        [:option {:value (str "Asset:Checking:" val)} val])]))
 
@@ -61,24 +61,25 @@
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
       "Amount"
       [:input.block.w-full.rounded-md.border-0.py-1.5.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
-       {:type "number" :placeholder "0.00"}]]
+       {:type "number" :placeholder "0.00" :name "amount"}]]
      [:label.absolute.right-0.top-7
       [:span.sr-only
        "Currency"]
       [:select.h-full.rounded-md.border-0.bg-transparent.py-0.pl-2.pr-7.text-gray-500.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm
+       {:name "currency"}
        [:option "INR"]
        [:option "USD"]
        [:option "EUR"]]]]
     [:label.block.text-sm.font-medium.leading-6.text-gray-900
      [:span.block "Comment"]
-     [:input {:type "text"}]]]))
+     [:input {:type "text" :name "comment"}]]]))
 
 (defn add-posting! [e]
   (.preventDefault e)
   (.insertAdjacentHTML (js/document.getElementById "postings") "beforeend" (posting)))
 
 (defn new-transaction-page []
-  [:div#new-transaction-page
+  [:div#new-transaction.page
    [:form.px-4.space-y-5
     [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5
      [:div.col-span-full
