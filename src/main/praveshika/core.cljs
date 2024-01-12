@@ -5,12 +5,12 @@
             [praveshika.new :as new]
             [praveshika.settings :as settings]))
 
-(defn set-active-link [el state]
+(defn set-active-link! [el state]
   (if state
     (.. el -classList (add "text-blue-600" "bg-gray-100"))
     (.. el -classList (remove "text-blue-600" "bg-gray-100"))))
 
-(defn set-active-page [el state]
+(defn set-active-page! [el state]
   (if state
     (.. el -classList (remove "hidden"))
     (.. el -classList (add "hidden"))))
@@ -30,11 +30,11 @@
         unmatched-links (->> links
                              (remove match-data-link))]
     (doseq [un unmatched-pages]
-      (set-active-page un false))
+      (set-active-page! un false))
     (doseq [link unmatched-links]
-      (set-active-link link false))
-    (set-active-link clicked-link true)
-    (set-active-page (first matched-pages ) true)))
+      (set-active-link! link false))
+    (set-active-link! clicked-link true)
+    (set-active-page! (first matched-pages) true)))
 
 (defn- tab-nav-bar []
   [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
