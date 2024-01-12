@@ -2,7 +2,7 @@
     "name": "Praveshika",
     "description": "Record your transactions on the go",
     "short_name": "Praveshika",
-    "start_url": "http://localhost:8000",
+    "start_url": "https://praveshika.netlify.app",
     "lang": "en_US",
     "display": "standalone"
 }
