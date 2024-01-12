@@ -69,12 +69,12 @@
   ;; Create App
   (aset (.getElementById js/document "app") "innerHTML" (app))
   ;; Register Click Listeners
+  (doseq [nav-link (js/document.querySelectorAll "nav li")]
+    (.addEventListener nav-link "click" route))
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
-  (doseq [nav-link (js/document.querySelectorAll "nav li")]
-    (.addEventListener nav-link "click" route))
   (-> (js/document.getElementById "copy")
       (.addEventListener "click" all/copy-transactions!)))
