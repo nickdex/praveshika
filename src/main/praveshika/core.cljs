@@ -37,22 +37,23 @@
     (set-active-page! (first matched-pages) true)))
 
 (defn- tab-nav-bar []
-  [:ul#nav-bar.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
-    {:data-link "new"}
-    [:a.inline-block.p-4
-     {:aria-current "page"}
-     "New"]]
-   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
-    {:data-link "all"}
-    [:a.inline-block.p-4
-     {:href "#"}
-     "History"]]
-   [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
-    {:data-link "settings"}
-    [:a.inline-block.p-4
-     {:href "#"}
-     "Settings"]]])
+  [:nav
+   [:ul.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
+    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
+     {:data-link "new"}
+     [:a.inline-block.p-4
+      {:aria-current "page"}
+      "New"]]
+    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+     {:data-link "all"}
+     [:a.inline-block.p-4
+      {:href "#"}
+      "History"]]
+    [:li.nav-link.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+     {:data-link "settings"}
+     [:a.inline-block.p-4
+      {:href "#"}
+      "Settings"]]]])
 
 (defn app []
   (html
