@@ -13,7 +13,8 @@
   [transaction]
   (let [{:keys [date payee tag postings]} transaction
         ->hledger-posting (fn [{:keys [account amount currency comment]}]
-                            (str account "   "
+                            (str "    "
+                                 account "   "
                                  amount " "
                                  currency
                                  (when comment (str "\n    ; " comment))))]
