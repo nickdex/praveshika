@@ -1,6 +1,7 @@
 (ns praveshika.all
   (:require-macros [hiccups.core :refer [html]])
-  (:require [praveshika.db :as db]))
+  (:require [praveshika.common :as common]
+            [praveshika.db :as db]))
 
 (defn transactions-list-item [transaction]
   (html
@@ -30,9 +31,9 @@
          [:span (:currency posting)]]
         [:span.col-span-full (:comment posting)]])]]))
 
-(defn ->transaction 
+(defn ->transaction
   "Creates transaction object from transaction list item"
-  [container-element] 
+  [container-element]
   (let [values (->> (.querySelectorAll container-element "span")
                     (map #(.-textContent %)))
         postings (->> values
@@ -74,9 +75,20 @@
   (db/prepend-transaction! transaction)
   (refresh!))
 
+(defn copy-transactions!
+  "Copies all transations in hledger style"
+  [event]
+  (.preventDefault event)
+  (.. event -target -classList (add "bg-green-500"))
+  (let [transactions (db/get-all-transactions)]
+    (js/console.debug "Copying" (count transactions))
+    (js/navigator.clipboard.writeText (common/->hledger-transactions transactions)))
+  (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
+
 (defn all-transactions-page []
   (html
    [:div#all-transactions-page.min-h-full.grid.hidden
+    [:button#copy.p-2.py-4.m-2.rounded-lg.bg-blue-500.text-white "Copy All"]
     [:ul#transactions.m-2
      (for [transaction (db/get-all-transactions)]
        (transactions-list-item transaction))]]))

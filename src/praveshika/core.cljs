@@ -50,5 +50,7 @@
       (.addEventListener "click" new/save-transaction!))
   (-> (.getElementById js/document "all-transactions-link")
       (.addEventListener "click" #(route :all)))
+  (-> (js/document.getElementById "copy")
+      (.addEventListener "click" all/copy-transactions!))
   (-> (.getElementById js/document "new-transaction-link")
       (.addEventListener "click" #(route :new))))

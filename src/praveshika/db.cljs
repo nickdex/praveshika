@@ -4,22 +4,32 @@
 (def r (t/reader :json))
 (def w (t/writer :json))
 
-(defn make-transaction [date payee tag postings]
-  {:date date
-   :payee payee
-   :tag tag
-   :postings (vec postings)})
+(defn make-posting
+  ([posting]
+   (apply make-posting (vals posting)))
+  ([account amount currency comment]
+   {:account account
+    :amount (if (= "" amount) 0 (js/parseInt amount))
+    :currency currency
+    :comment (if (empty? comment) nil comment)}))
 
-(defn make-posting [account amount currency comment]
-  {:account account
-   :amount (if (empty? amount) 0 (js/parseInt amount))
-   :currency currency
-   :comment comment})
+(defn make-transaction
+  ([transaction]
+   (let [{:keys [date payee tag postings]} transaction]
+     (make-transaction date payee tag (when postings (map make-posting postings)))))
+  ([date payee tag postings]
+   {:date date
+    :payee payee
+    :tag (if (empty? tag) nil tag)
+    :postings (vec postings)}))
 
 (defn get-all-transactions
   "Fetch all transactions from data store"
   []
-  (t/read r (js/localStorage.getItem "transactions")))
+  (->> "transactions"
+       js/localStorage.getItem
+       (t/read r)
+       (map make-transaction)))
 
 (defn- reset-transactions!
   [transactions]
@@ -43,4 +53,3 @@
   (->> (get-all-transactions)
        (cons transaction)
        reset-transactions!))
-       
