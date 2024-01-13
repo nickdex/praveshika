@@ -74,6 +74,7 @@
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)
+  (settings/register-remove-button-click-listeners)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
   (-> (js/document.getElementById "copy")

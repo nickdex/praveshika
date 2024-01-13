@@ -10,4 +10,17 @@
    [:ul.border.my-2.h-32.overflow-y-auto
     (for [item payees]
       [:li.inline-block.p-2.text-center.text-sm.bg-green-300.m-2.rounded-full item
-       [:button.float-right.rounded-full.ml-2.px-2.bg-red-400.text-white "X"]])]])
+       [:button.remove.float-right.rounded-full.ml-2.px-2.bg-red-400.text-white "X"]])]])
+
+(defn delete-payee!
+  "Remove payee from app"
+  ([event]
+   (.preventDefault event)
+   (let [payee-el (.. event -currentTarget -parentElement)]
+     (.remove payee-el))))
+
+(defn register-remove-button-click-listeners []
+  (doseq [remove-button (js/document.querySelectorAll "#settings button.remove")]
+    (.addEventListener remove-button
+                       "click"
+                       delete-payee!)))
