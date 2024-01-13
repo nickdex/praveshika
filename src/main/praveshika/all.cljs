@@ -46,23 +46,21 @@
                          (apply db/make-transaction))]
     transaction))
 
-(defn remove-transaction!
-  ([remove-button]
-   (let [transaction-container (.-parentElement remove-button)
+(defn delete-transaction!
+  "Delete transaction from app"
+  ([event]
+   (.preventDefault event)
+   (let [transaction-container (.. event -currentTarget -parentElement)
          transaction (->transaction transaction-container)]
      (js/console.debug "removing transaction" transaction)
      (.remove transaction-container)
-     (db/remove-transaction! transaction)))
-  ([e remove-button]
-   (.preventDefault e)
-   (js/console.debug "remove-transaction entered")
-   (remove-transaction! remove-button)))
+     (db/remove-transaction! transaction))))
 
 (defn register-remove-button-click-listeners []
   (doseq [remove-button (js/document.querySelectorAll "#transactions button.remove")]
     (.addEventListener remove-button
                        "click"
-                       #(remove-transaction! % remove-button))))
+                       delete-transaction!)))
 
 (defn refresh!
   "Renders all records in history"
