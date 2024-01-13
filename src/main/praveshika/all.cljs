@@ -59,7 +59,7 @@
    (remove-transaction! remove-button)))
 
 (defn register-remove-button-click-listeners []
-  (doseq [remove-button (js/document.querySelectorAll "button.remove")]
+  (doseq [remove-button (js/document.querySelectorAll "#transactions button.remove")]
     (.addEventListener remove-button
                        "click"
                        #(remove-transaction! % remove-button))))
