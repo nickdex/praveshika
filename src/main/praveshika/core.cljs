@@ -77,5 +77,7 @@
   (settings/register-remove-button-click-listeners)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
+  (-> (js/document.querySelector "[data-section=\"payee\"] button.add")
+      (.addEventListener "click" settings/add-payee!))
   (-> (js/document.getElementById "copy")
       (.addEventListener "click" all/copy-transactions!)))

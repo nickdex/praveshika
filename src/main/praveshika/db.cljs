@@ -66,6 +66,14 @@
        (t/write w)
        (js/localStorage.setItem "payees")))
 
+(defn add-payee!
+  "Add payee on top in data store"
+  [payee]
+  (->> (get-all-payees)
+       (cons payee)
+       vec
+       reset-payees!))
+
 (defn remove-payee!
   "Remove a payee from data store"
   [payee]
