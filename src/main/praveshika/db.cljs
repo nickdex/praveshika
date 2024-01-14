@@ -52,3 +52,23 @@
   (->> (get-all-transactions)
        (cons transaction)
        reset-transactions!))
+
+(defn get-all-payees
+  "Fetch all payees from data store"
+  []
+  (->> (js/localStorage.getItem "payees")
+       (t/read r)))
+
+(defn reset-payees!
+  [payees]
+  (->> payees
+       vec
+       (t/write w)
+       (js/localStorage.setItem "payees")))
+
+(defn remove-payee!
+  "Remove a payee from data store"
+  [payee]
+  (->> (get-all-payees)
+       (remove #(= payee %))
+       reset-payees!))
