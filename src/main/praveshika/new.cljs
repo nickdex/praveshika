@@ -14,9 +14,7 @@
        [:option {:value (str "Asset:Checking:" val)} val])]))
 
 (defn- payee-select []
-  (let [payee ["Swiggy"
-               "Shell"
-               "Shoppy Mart"]]
+  (let [payee (db/get-all-payees)]
     [:select#payee.w-full {:name "payee"}
      (for [val payee]
        [:option val])]))
