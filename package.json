@@ -5,8 +5,9 @@
     "postcss:watch": "cross-env postcss src/css/tailwind.css -o ./public/css/main.css --verbose -w",
     "postcss:release": "cross-env NODE_ENV=production postcss src/css/tailwind.css -o ./public/css/main.css --verbose",
     "clean": "shx rm -rf public/css public/js",
+    "deploy": "netlify deploy -p -d public",
     "dev": "run-p -l *:watch",
-    "release": "run-s -l clean *:release"
+    "release": "run-s -l clean *:release deploy"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
