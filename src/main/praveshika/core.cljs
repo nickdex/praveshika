@@ -8,8 +8,8 @@
 
 (defn set-active-link! [el state]
   (if state
-    (.. el -classList (add "text-blue-600" "bg-gray-100"))
-    (.. el -classList (remove "text-blue-600" "bg-gray-100"))))
+    (.. el -classList (add "text-blue-600" "border-b" "border-b-blue-600"))
+    (.. el -classList (remove "text-blue-600" "border-b" "border-b-blue-600"))))
 
 (defn set-active-page! [el state]
   (if state
@@ -39,21 +39,19 @@
 
 (defn- tab-nav-bar []
   [:nav
-   [:ul.flex.flex-wrap.text-sm.font-medium.text-center.text-gray-500.border-b.border-gray-200
-    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200.text-blue-600.bg-gray-100
+   [:ol.flex.text-sm.font-medium.text-center.text-gray-400.border-b
+    [:li.me-2.flex-1.w-full.hover:text-gray-600.hover:border-gray-600.text-blue-600.border-b.border-b-blue-600
      {:data-link "new"}
      [:a.inline-block.p-4
       {:aria-current "page"}
       "New"]]
-    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    [:li.me-2.flex-1.w-full.hover:text-gray-600.hover:border-gray-600.hover:border-b
      {:data-link "all"}
      [:a.inline-block.p-4
-      {:href "#"}
       "History"]]
-    [:li.me-2.grow.rounded-t-lg.cursor-pointer.hover:bg-gray-200
+    [:li.me-2.flex-1.w-full.hover:text-gray-600.hover:border-gray-600.hover:border-b
      {:data-link "settings"}
      [:a.inline-block.p-4
-      {:href "#"}
       "Settings"]]]])
 
 (defn app []
