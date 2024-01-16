@@ -16,10 +16,15 @@
       [:option val])]])
 
 (defn- payee-select []
-  (let [payee (db/get-all-payees)]
-    [:select#payee.w-full {:name "payee"}
-     (for [val payee]
-       [:option val])]))
+  [:label.block.text-sm.font-medium.leading-6.text-gray-900
+   "Payee"
+   [:input#payee.w-full
+    {:name "payee"
+     :value "Swiggy"
+     :list "payee-suggestion"}]
+   [:datalist#payee-suggestion
+    (for [val (db/get-all-payees)]
+      [:option val])]])
 
 (defn refresh-payees!
   [payees]
@@ -95,10 +100,7 @@
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "date"}
        "Date"]
       [:input#date {:type "date" :value (common/get-todays-date)}]]
-     [:div
-      [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "payee"}
-       "Payee"]
-      (payee-select)]
+     (payee-select)
      [:div
       [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "tag"}
        "Tag"]
@@ -111,4 +113,4 @@
      [:ul#postings
       (posting)]]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
-     {:type "button"} "Save"]]]) 
+      "Save"]]]) 
