@@ -44,7 +44,7 @@
        [:option {:value val} val])]))
 
 (defn posting-values! [posting]
-  (->> (.querySelectorAll posting "#postings input, #postings select")
+  (->> (.querySelectorAll posting "#postings input, #postings select, #postings textarea")
        (map #(.-value %))
        (apply db/make-posting)))
 
@@ -85,7 +85,7 @@
        [:option "EUR"]]]]
     [:label.block.text-sm.font-medium.leading-6.text-gray-900
      [:span.block "Comment"]
-     [:input {:type "text" :name "comment"}]]]))
+     [:textarea.w-full {:type "text" :name "comment"}]]]))
 
 (defn add-posting! [e]
   (.preventDefault e)
