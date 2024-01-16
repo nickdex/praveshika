@@ -75,6 +75,9 @@
   (add-watch db/transactions
              :new
              #(all/refresh! (db/get-all-transactions)))
+  (add-watch db/payees
+             :new
+             #(settings/refresh-payees! (db/get-all-payees)))
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)

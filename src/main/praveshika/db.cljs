@@ -3,6 +3,7 @@
             [alandipert.storage-atom :refer [local-storage]]))
 
 (def transactions (local-storage (atom []) :transactions))
+(def payees (local-storage (atom ["Swiggy" "Shoppy Mart" "Zomato" "Shell"]) :payees))
 (def r (t/reader :json))
 (def w (t/writer :json))
 
@@ -51,27 +52,15 @@
 (defn get-all-payees
   "Fetch all payees from data store"
   []
-  (->> (js/localStorage.getItem "payees")
-       (t/read r)))
-
-(defn reset-payees!
-  [payees]
-  (->> payees
-       vec
-       (t/write w)
-       (js/localStorage.setItem "payees")))
+  (->> @payees
+       vec))
 
 (defn add-payee!
   "Add payee on top in data store"
   [payee]
-  (->> (get-all-payees)
-       (cons payee)
-       vec
-       reset-payees!))
-
+  (swap! payees conj payee))
+  
 (defn remove-payee!
   "Remove a payee from data store"
   [payee]
-  (->> (get-all-payees)
-       (remove #(= payee %))
-       reset-payees!))
+  (swap! payees remove-element payee))
