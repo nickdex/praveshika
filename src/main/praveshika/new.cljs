@@ -13,7 +13,7 @@
   [:div.account.relative.mt-2.rounded-md.shadow-sm.relative
    [:label.block.text-sm.font-medium.leading-6.text-gray-900
     "Account"
-    [:input.block.w-full.rounded-md.border-0.py-1.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+    [:input.block.w-full.rounded-md.border-0.py-1.pr-10.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
      {:name "account"
       :value "Assets:Cash"
       :list "account-suggestion"}]]
@@ -35,7 +35,7 @@
   [:div.payee.relative.mt-2.rounded-md.shadow-sm.relative
    [:label.block.text-sm.font-medium.leading-6.text-gray-900
     "Payee"
-    [:input.block.w-full.rounded-md.border-0.py-1.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+    [:input#payee.block.w-full.rounded-md.border-0.py-1.pr-10.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
      {:name "payee"
       :value "Swiggy"
       :list "payee-suggestion"}]]
@@ -64,11 +64,14 @@
         (html (map (fn [element] [:option element]) payees))))
 
 (defn- tag-select []
-  (let [tag ["Friends"]]
-    [:select#tag.w-full {:name "tag"}
-     [:option {:value ""} "-"]
-     (for [val tag]
-       [:option {:value val} val])]))
+  [:label.block.text-sm.font-medium.leading-6.text-gray-900
+   "Tag"
+   [:select#tag.w-full.rounded-md.border-0.py-1.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+    {:name "tag"}
+    [:option {:value ""} "-"]
+    (let [tag ["Friends"]]
+      (for [val tag]
+        [:option {:value val} val]))]])
 
 (defn posting-values! [posting]
   (->> (.querySelectorAll posting "#postings input, #postings select, #postings textarea")
@@ -112,7 +115,11 @@
        [:option "EUR"]]]]
     [:label.block.text-sm.font-medium.leading-6.text-gray-900
      [:span.block "Comment"]
-     [:textarea.w-full {:type "text" :name "comment"}]]]))
+     [:textarea.w-full.rounded-md.border-0.py-1.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+      {:type "text"
+       :name "comment"
+       :rows 2
+       :placeholder "Use for adding item(s) details"}]]]))
 
 (defn add-posting! [e]
   (.preventDefault e)
@@ -121,16 +128,15 @@
 (defn home []
   [:section.page
    {:data-link "new"}
-   [:form.px-4.space-y-5
+   [:form.px-4
     [:div.mt-2.gap-x-6.gap-y-5.columns-2
-     [:label.block.text-sm.font-medium.leading-6.text-gray-900 
-      "Date"
-      [:input#date.block {:type "date" :value (common/get-todays-date)}]]
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
-      "Tag"
-      (tag-select)]]
+      "Date"
+      [:input#date.block.w-full.rounded-md.border-0.py-1.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+       {:type "date" :value (common/get-todays-date)}]]
+     (tag-select)]
     (payee-select)
-    [:div.flex
+    [:div.flex.items-center.my-3
      [:h2.grow.font-medium.leading-6.text-gray-900.text-xl.text-center
       "Postings"]
      [:button#add-posting.bg-blue-500.rounded-md.px-3.py-1.text-center.text-white
