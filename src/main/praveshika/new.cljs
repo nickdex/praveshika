@@ -101,9 +101,8 @@
        "Date"]
       [:input#date {:type "date" :value (common/get-todays-date)}]]
      (payee-select)
-     [:div
-      [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "tag"}
-       "Tag"]
+     [:label.block.text-sm.font-medium.leading-6.text-gray-900
+      "Tag"
       (tag-select)]]
     [:div
      [:div.flex.p-2
