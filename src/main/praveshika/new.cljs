@@ -4,24 +4,51 @@
             [praveshika.common :as common]
             [praveshika.db :as db]))
 
+(defn clear-input!
+  [event]
+  (.preventDefault event)
+  (set! (.. event -currentTarget -previousSibling -firstElementChild -value) ""))
+
 (defn- account-select []
-  [:label.account.block.text-sm.font-medium.leading-6.text-gray-900
-   "Account"
-   [:input.w-full
-    {:name "account"
-     :value "Assets:Cash"
-     :list "account-suggestion"}]
+  [:div.account.relative.mt-2.rounded-md.shadow-sm.relative
+   [:label.block.text-sm.font-medium.leading-6.text-gray-900
+    "Account"
+    [:input.block.w-full.rounded-md.border-0.py-1.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+     {:name "account"
+      :value "Assets:Cash"
+      :list "account-suggestion"}]]
+   [:button.clear.absolute.z-10.right-0.top-7.pr-2.py-0.pl-2
+    [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
+                   :fill "none"
+                   :viewBox "0 0 24 24"
+                   :stroke-width "1"
+                   :stroke "currentColor"}
+     [:path
+      {:stroke-linecap "round"
+       :stroke-linejoin "round"
+       :d "m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"}]]]
    [:datalist#account-suggestion
     (for [val (db/get-all-accounts)]
       [:option val])]])
 
 (defn- payee-select []
-  [:label.block.text-sm.font-medium.leading-6.text-gray-900
-   "Payee"
-   [:input#payee.w-full
-    {:name "payee"
-     :value "Swiggy"
-     :list "payee-suggestion"}]
+  [:div.payee.relative.mt-2.rounded-md.shadow-sm.relative
+   [:label.block.text-sm.font-medium.leading-6.text-gray-900
+    "Payee"
+    [:input.block.w-full.rounded-md.border-0.py-1.pr-20.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
+     {:name "payee"
+      :value "Swiggy"
+      :list "payee-suggestion"}]]
+   [:button.clear.absolute.z-10.right-0.top-7.pr-2.py-0.pl-2
+    [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
+                   :fill "none"
+                   :viewBox "0 0 24 24"
+                   :stroke-width "1"
+                   :stroke "currentColor"}
+     [:path
+      {:stroke-linecap "round"
+       :stroke-linejoin "round"
+       :d "m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"}]]]
    [:datalist#payee-suggestion
     (for [val (db/get-all-payees)]
       [:option val])]])

@@ -92,6 +92,8 @@
   (settings/register-remove-button-click-listeners
    (js/document.querySelectorAll "article.payee button.remove")
    settings/delete-payee!)
+  (doseq [button (js/document.querySelectorAll "label + button.clear")]
+    (.addEventListener button "click" new/clear-input!))
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
   (-> (js/document.querySelector "article.payee button.add")
