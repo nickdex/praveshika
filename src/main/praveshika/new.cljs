@@ -5,18 +5,26 @@
             [praveshika.db :as db]))
 
 (defn- account-select []
-  (let [accounts ["ICICI"
-                  "SBI"
-                  "Sodexo:6102"]]
-    [:select.w-full {:name "account"}
+  (let [accounts @db/accounts]
+    [:select.accounts.w-full {:name "account"}
      (for [val accounts]
-       [:option {:value (str "Asset:Checking:" val)} val])]))
+       [:option val])]))
 
 (defn- payee-select []
   (let [payee (db/get-all-payees)]
     [:select#payee.w-full {:name "payee"}
      (for [val payee]
        [:option val])]))
+
+(defn refresh-payees!
+  [payees]
+  (set! (js/document.querySelector "select#payee") -innerHTML
+        (html (map (fn [element] [:option element]) payees))))
+
+(defn refresh-accounts!
+  [payees]
+  (set! (js/document.querySelector "select.accounts") -innerHTML
+        (html (map (fn [element] [:option element]) payees))))
 
 (defn- tag-select []
   (let [tag ["Friends"]]
@@ -76,7 +84,7 @@
   (.insertAdjacentHTML (js/document.getElementById "postings") "beforeend" (posting)))
 
 (defn new-transaction-page []
-  [:div.page
+  [:section.page
    {:data-link "new"}
    [:form.px-4.space-y-5
     [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5

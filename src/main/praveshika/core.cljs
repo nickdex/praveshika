@@ -77,14 +77,26 @@
              #(all/refresh! (db/get-all-transactions)))
   (add-watch db/payees
              :new
-             #(settings/refresh-payees! (db/get-all-payees)))
+             #(do (settings/refresh-payees! (db/get-all-payees))
+                  (new/refresh-payees! (db/get-all-payees))))
+  (add-watch db/accounts
+             :new
+             #(do (settings/refresh-accounts! (db/get-all-accounts))
+                  (new/refresh-accounts! (db/get-all-accounts))))
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)
-  (settings/register-remove-button-click-listeners)
+  (settings/register-remove-button-click-listeners
+   (js/document.querySelectorAll "article.account button.remove")
+   settings/delete-account!)
+  (settings/register-remove-button-click-listeners
+   (js/document.querySelectorAll "article.payee button.remove")
+   settings/delete-payee!)
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
-  (-> (js/document.querySelector "[data-section=\"payee\"] button.add")
+  (-> (js/document.querySelector "article.payee button.add")
       (.addEventListener "click" settings/add-payee!))
+  (-> (js/document.querySelector "article.account button.add")
+      (.addEventListener "click" settings/add-account!))
   (-> (js/document.getElementById "copy")
       (.addEventListener "click" all/copy-transactions!)))
