@@ -58,7 +58,7 @@
 
 (defn app []
   (html
-   [:header.mt-2 [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
+   [:header.py-2.bg-blue-500.text-white [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
    (tab-nav-bar)
    [:main
     (new/home)
