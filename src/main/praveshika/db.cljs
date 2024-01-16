@@ -1,6 +1,8 @@
 (ns praveshika.db
-  (:require [cognitect.transit :as t]))
+  (:require [cognitect.transit :as t]
+            [alandipert.storage-atom :refer [local-storage]]))
 
+(def transactions (local-storage (atom []) :transactions))
 (def r (t/reader :json))
 (def w (t/writer :json))
 
@@ -26,32 +28,25 @@
 (defn get-all-transactions
   "Fetch all transactions from data store"
   []
-  (->> (js/localStorage.getItem "transactions")
-       (t/read r)
-       (map make-transaction)))
-
-(defn- reset-transactions!
-  [transactions]
-  (->> transactions
+  (->> @transactions
        (sort-by :date)
        reverse
        vec
-       (t/write w)
-       (js/localStorage.setItem "transactions")))
+       (map make-transaction)))
+
+(defn remove-element
+  [coll element]
+  (remove #(= % element) coll))
 
 (defn remove-transaction!
   "Remove a transaction from data store"
   [transaction]
-  (->> (get-all-transactions)
-       (remove #(= transaction %))
-       reset-transactions!))
+  (swap! transactions remove-element transaction))
 
-(defn prepend-transaction!
+(defn add-transaction!
   "Add latest transaction on top in data store"
   [transaction]
-  (->> (get-all-transactions)
-       (cons transaction)
-       reset-transactions!))
+  (swap! transactions conj transaction))
 
 (defn get-all-payees
   "Fetch all payees from data store"

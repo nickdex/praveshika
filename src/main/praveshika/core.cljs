@@ -3,7 +3,8 @@
   (:require [hiccups.runtime]
             [praveshika.all :as all]
             [praveshika.new :as new]
-            [praveshika.settings :as settings]))
+            [praveshika.settings :as settings]
+            [praveshika.db :as db]))
 
 (defn set-active-link! [el state]
   (if state
@@ -71,6 +72,9 @@
   ;; Register Click Listeners
   (doseq [nav-link (js/document.querySelectorAll "nav li")]
     (.addEventListener nav-link "click" route))
+  (add-watch db/transactions
+             :new
+             #(all/refresh! (db/get-all-transactions)))
   (-> (js/document.getElementById "add-posting")
       (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)

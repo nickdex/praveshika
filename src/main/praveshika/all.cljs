@@ -64,15 +64,13 @@
 
 (defn refresh!
   "Renders all records in history"
-  []
-  (set! (.-innerHTML (js/document.getElementById "transactions"))
-        (html
-         (map transactions-list-item (db/get-all-transactions))))
-  (register-remove-button-click-listeners))
-
-(defn add-transaction! [transaction]
-  (db/prepend-transaction! transaction)
-  (refresh!))
+  ([transactions]
+   (set! (.-innerHTML (js/document.getElementById "transactions"))
+         (html
+          (map transactions-list-item transactions)))
+   (register-remove-button-click-listeners))
+  ([]
+   (refresh! (db/get-all-transactions))))
 
 (defn copy-transactions!
   "Copies all transations in hledger style"

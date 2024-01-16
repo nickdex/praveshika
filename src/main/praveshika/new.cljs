@@ -1,7 +1,6 @@
 (ns praveshika.new
   (:require-macros [hiccups.core :refer [html]])
   (:require [clojure.string :as str]
-            [praveshika.all :as all]
             [praveshika.common :as common]
             [praveshika.db :as db]))
 
@@ -46,7 +45,7 @@
 
 (defn save-transaction! [event]
   (.. event -target -classList (add "bg-green-500"))
-  (all/add-transaction! (create-transaction))
+  (db/add-transaction! (create-transaction))
   (js/setTimeout #(.. event -target -classList (remove "bg-green-500")) 1500))
 
 (defn- posting []
