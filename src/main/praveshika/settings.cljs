@@ -19,14 +19,16 @@
    {:data-link "settings"}
    [:article.payee
     [:label.mr-2 "Payee"
-     [:input.ml-2 {:placeholder "Enter Payee"}]]
+     [:input.ml-2 {:name "payee"
+                   :placeholder "Enter Payee"}]]
     [:button.add.mx-2.bg-blue-500.p-2.text-white.rounded-lg "Add"]
     [:ul#payees.border.my-2.h-32.overflow-y-auto
      (for [item (db/get-all-payees)]
        (chip-li item))]]
    [:article.account
     [:label.mr-2 "Account"
-     [:input.ml-2 {:placeholder "Enter Account"}]]
+     [:input.ml-2 {:name "account"
+                   :placeholder "Enter Account"}]]
     [:button.add.mx-2.bg-blue-500.p-2.text-white.rounded-lg "Add"]
     [:ul#accounts.border.my-2.h-32.overflow-y-auto
      (for [item @db/accounts]
