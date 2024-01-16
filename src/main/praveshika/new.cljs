@@ -122,21 +122,27 @@
   [:section.page
    {:data-link "new"}
    [:form.px-4.space-y-5
-    [:div.mt-2.grid.grid-cols-2.gap-x-6.gap-y-5
-     [:div.col-span-full
-      [:label.block.text-sm.font-medium.leading-6.text-gray-900 {:for "date"}
-       "Date"]
-      [:input#date {:type "date" :value (common/get-todays-date)}]]
-     (payee-select)
+    [:div.mt-2.gap-x-6.gap-y-5.columns-2
+     [:label.block.text-sm.font-medium.leading-6.text-gray-900 
+      "Date"
+      [:input#date.block {:type "date" :value (common/get-todays-date)}]]
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
       "Tag"
       (tag-select)]]
-    [:div
-     [:div.flex.p-2
-      [:h1.block.grow.font-medium.leading-6.text-gray-900.text-xl.text-center
-       "Postings"]
-      [:button#add-posting.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white "+"]]
-     [:ul#postings
-      (posting)]]
+    (payee-select)
+    [:div.flex
+     [:h2.grow.font-medium.leading-6.text-gray-900.text-xl.text-center
+      "Postings"]
+     [:button#add-posting.bg-blue-500.rounded-md.px-3.py-1.text-center.text-white
+      [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
+                     :fill "none"
+                     :viewBox "0 0 24 24"
+                     :stroke-width "1.5"
+                     :stroke "currentColor"}
+       [:path {:stroke-linecap "round"
+               :stroke-linejoin "round"
+               :d "M12 4.5v15m7.5-7.5h-15"}]]]]
+    [:ul#postings
+     (posting)]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
      "Save"]]]) 
