@@ -129,7 +129,7 @@
   [:section.page
    {:data-link "new"}
    [:form.px-4
-    [:div.mt-2.gap-x-6.gap-y-5.columns-2
+    [:div.mt-2.gap-x-6.grid.grid-cols-2
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
       "Date"
       [:input#date.block.w-full.rounded-md.border-0.py-1.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
