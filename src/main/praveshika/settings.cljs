@@ -14,7 +14,7 @@
      [:path
       {:stroke-linecap "round" :stroke-linejoin "round" :d "M6 18 18 6M6 6l12 12"}]]]])
 
-(defn page []
+(defn home []
   [:section.page.p-4.hidden
    {:data-link "settings"}
    [:article.payee
@@ -84,7 +84,7 @@
    (set! (.-innerHTML (js/document.getElementById "accounts"))
          (html
           (map chip-li accounts)))
-   (register-remove-button-click-listeners 
+   (register-remove-button-click-listeners
     (js/document.querySelectorAll "article.account button.remove")
     delete-account!)))
 

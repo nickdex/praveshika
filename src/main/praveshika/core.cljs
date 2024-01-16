@@ -61,9 +61,9 @@
    [:header.mt-2 [:h1.text-center.text-2xl.font-semibold "Praveshika"]]
    (tab-nav-bar)
    [:main
-    (new/new-transaction-page)
-    (all/all-transactions-page)
-    (settings/page)]))
+    (new/home)
+    (all/home)
+    (settings/home)]))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn ^:dev/after-load main []

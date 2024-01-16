@@ -91,7 +91,7 @@
   (.preventDefault e)
   (.insertAdjacentHTML (js/document.getElementById "postings") "beforeend" (posting)))
 
-(defn new-transaction-page []
+(defn home []
   [:section.page
    {:data-link "new"}
    [:form.px-4.space-y-5
@@ -112,4 +112,4 @@
      [:ul#postings
       (posting)]]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white
-      "Save"]]]) 
+     "Save"]]]) 

@@ -84,11 +84,10 @@
      (js/console.debug "Copying" (count transactions))
      (js/navigator.clipboard.writeText (common/->hledger-transactions transactions)))))
 
-(defn all-transactions-page []
-  (html
-   [:div.page.min-h-full.grid.hidden
-    {:data-link "all"}
-    [:button#copy.p-2.py-4.m-2.rounded-lg.bg-blue-500.text-white "Copy All"]
-    [:ul#transactions.m-2
-     (for [transaction (db/get-all-transactions)]
-       (transactions-list-item transaction))]]))
+(defn home []
+  [:section.page.min-h-full.grid.hidden
+   {:data-link "all"}
+   [:button#copy.p-2.py-4.m-2.rounded-lg.bg-blue-500.text-white "Copy All"]
+   [:ul#transactions.m-2
+    (for [transaction (db/get-all-transactions)]
+      (transactions-list-item transaction))]])
