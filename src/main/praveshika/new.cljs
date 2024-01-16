@@ -5,10 +5,15 @@
             [praveshika.db :as db]))
 
 (defn- account-select []
-  (let [accounts @db/accounts]
-    [:select.accounts.w-full {:name "account"}
-     (for [val accounts]
-       [:option val])]))
+  [:label.account.block.text-sm.font-medium.leading-6.text-gray-900
+   "Account"
+   [:input.w-full
+    {:name "account"
+     :value "Assets:Cash"
+     :list "account-suggestion"}]
+   [:datalist#account-suggestion
+    (for [val (db/get-all-accounts)]
+      [:option val])]])
 
 (defn- payee-select []
   (let [payee (db/get-all-payees)]
@@ -59,9 +64,7 @@
 (defn- posting []
   (html
    [:li.posting.my-1.col-span-full.p-4.border.border-neutral-300.space-y-3
-    [:label.block.text-sm.font-medium.leading-6.text-gray-900
-     "Account"
-     (account-select)]
+    (account-select)
     [:div.relative.mt-2.rounded-md.shadow-sm
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
       "Amount"
