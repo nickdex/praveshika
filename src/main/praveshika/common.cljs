@@ -23,7 +23,12 @@
                                  account (separator)
                                  amount " "
                                  currency
-                                 (when comment (str "\n" (separator 2)  "; "comment))))]
+                                 (when comment
+                                   (str "\n"
+                                        (->>
+                                         (str/split-lines comment)
+                                         (map #(str (separator 2)  "; " %))
+                                         (str/join "\n"))))))]
     (str date " " payee (when tag (str " ; " tag))
          (when postings
            (str "\n"
