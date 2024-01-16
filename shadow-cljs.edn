@@ -1,6 +1,5 @@
 {:source-paths ["src/main"]
  :dependencies [[hiccups "0.3.0"]
-                [com.cognitect/transit-cljs "0.8.280"]
                 [alandipert/storage-atom "2.0.1"]]
  :dev-http {8020 "public"}
  :builds {:app {:target :browser

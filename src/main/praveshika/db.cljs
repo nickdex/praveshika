@@ -1,11 +1,9 @@
 (ns praveshika.db
-  (:require [cognitect.transit :as t]
-            [alandipert.storage-atom :refer [local-storage]]))
+  (:require
+   [alandipert.storage-atom :refer [local-storage]]))
 
 (def transactions (local-storage (atom []) :transactions))
 (def payees (local-storage (atom ["Swiggy" "Shoppy Mart" "Zomato" "Shell"]) :payees))
-(def r (t/reader :json))
-(def w (t/writer :json))
 
 (defn make-posting
   ([posting]
@@ -59,7 +57,7 @@
   "Add payee on top in data store"
   [payee]
   (swap! payees conj payee))
-  
+
 (defn remove-payee!
   "Remove a payee from data store"
   [payee]
