@@ -2,9 +2,10 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [hiccups.runtime]
             [praveshika.all :as all]
+            [praveshika.common :as common]
+            [praveshika.db :as db]
             [praveshika.new :as new]
-            [praveshika.settings :as settings]
-            [praveshika.db :as db]))
+            [praveshika.settings :as settings]))
 
 (defn set-active-link! [el state]
   (if state
@@ -90,8 +91,8 @@
   (settings/register-remove-button-click-listeners
    (js/document.querySelectorAll "article.payee button.remove")
    settings/delete-payee!)
-  (doseq [button (js/document.querySelectorAll "label + button.clear")]
-    (.addEventListener button "click" new/clear-input!))
+  (doseq [button (js/document.querySelectorAll "button.clear")]
+    (.addEventListener button "click" common/clear-input!))
   (-> (.getElementById js/document "save-transaction")
       (.addEventListener "click" new/save-transaction!))
   (-> (js/document.querySelector "article.payee button.add")

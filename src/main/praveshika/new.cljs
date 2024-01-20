@@ -4,11 +4,6 @@
             [praveshika.common :as common]
             [praveshika.db :as db]))
 
-(defn clear-input!
-  [event]
-  (.preventDefault event)
-  (set! (.. event -currentTarget -previousSibling -firstElementChild -value) ""))
-
 (defn- account-select []
   [:div.account.relative.mt-2.rounded-md.shadow-sm.relative
    [:label.block.text-sm.font-medium.leading-6.text-gray-900

@@ -1,5 +1,6 @@
 (ns praveshika.common
   (:require [clojure.string :as str]))
+
 (defn get-todays-date []
   (let [today (js/Date.)
         year (.getFullYear today)
@@ -14,6 +15,14 @@
    (separator 1))
   ([times]
    (apply str (repeat (* times 4) " "))))
+
+(defn clear-input!
+  [event]
+  (.preventDefault event)
+  (let [parent (.. event -currentTarget -parentElement)
+        input-el (.querySelector parent "input")]
+    (js/console.log parent)
+    (set! (.-value input-el) "")))
 
 (defn ->hledger-transaction
   [transaction]
