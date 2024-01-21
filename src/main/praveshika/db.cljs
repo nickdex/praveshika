@@ -11,6 +11,7 @@
                                     "Assets:Checking:Paytm"
                                     "Assets:Checking:SBI"
                                     "Assets:Checking:Yes Bank"
+                                    "Assets:Checking:Sodexo-6102"
                                     "Assets:Deposit"
                                     "Assets:Equity:BHAAIR"
                                     "Assets:Equity:BHAINF"
