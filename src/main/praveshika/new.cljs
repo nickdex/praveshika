@@ -10,7 +10,6 @@
     "Account"
     [:input.block.w-full.rounded-md.border-0.py-1.pr-10.text-gray-900.ring-1.ring-inset.ring-gray-300.placeholder:text-gray-400.focus:ring-2.focus:ring-inset.focus:ring-indigo-600.sm:text-sm.sm:leading-6
      {:name "account"
-      :value "Assets:Cash"
       :list "account-suggestion"}]]
    [:button.clear.absolute.z-10.right-0.top-7.pr-2.py-0.pl-2
     [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
