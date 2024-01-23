@@ -94,13 +94,17 @@
                                     "Liabilities:Loan:Principal"]) :accounts))
 
 (defn make-posting
-  ([posting]
-   (apply make-posting (vals posting)))
+  ([{:keys [account amount currency comment]}]
+   (make-posting account amount currency comment))
   ([account amount currency comment]
-   {:account account
-    :amount (if (= "" amount) 0 (js/parseInt amount))
-    :currency (if-not currency "INR" currency)
-    :comment (if (empty? comment) nil comment)}))
+   (merge {:account account}
+          (when (not-empty amount)
+            {:amount (js/parseInt amount)})
+          (when (and (not-empty amount)
+                     (not-empty currency))
+            {:currency currency})
+          (when (not-empty comment)
+            {:comment comment}))))
 
 (defn make-transaction
   ([transaction]
