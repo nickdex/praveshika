@@ -93,7 +93,7 @@
 
 (defn- posting []
   (html
-   [:li.posting.my-1.col-span-full.p-4.border.border-neutral-300.space-y-3
+   [:li.posting.my-1.col-span-full.space-y-3
     (account-select)
     [:div.relative.mt-2.rounded-md.shadow-sm
      [:label.block.text-sm.font-medium.leading-6.text-gray-900
@@ -131,18 +131,6 @@
        {:type "date" :value (common/get-todays-date)}]]
      (tag-select)]
     (payee-select)
-    [:div.flex.items-center.my-3
-     [:h2.grow.font-medium.leading-6.text-gray-900.text-xl.text-center
-      "Postings"]
-     [:button#add-posting.bg-blue-500.rounded-md.px-3.py-1.text-center.text-white
-      [:svg.w-6.h-6 {:xmlns "http://www.w3.org/2000/svg"
-                     :fill "none"
-                     :viewBox "0 0 24 24"
-                     :stroke-width "1.5"
-                     :stroke "currentColor"}
-       [:path {:stroke-linecap "round"
-               :stroke-linejoin "round"
-               :d "M12 4.5v15m7.5-7.5h-15"}]]]]
     [:ul#postings
      (posting)]
     [:button#save-transaction.w-full.bg-blue-500.rounded-md.px-6.py-2.text-center.text-white

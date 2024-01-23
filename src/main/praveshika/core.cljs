@@ -82,8 +82,6 @@
              :new
              #(do (settings/refresh-accounts! (db/get-all-accounts))
                   (new/refresh-accounts! (db/get-all-accounts))))
-  (-> (js/document.getElementById "add-posting")
-      (.addEventListener "click" new/add-posting!))
   (all/register-remove-button-click-listeners)
   (settings/register-remove-button-click-listeners
    (js/document.querySelectorAll "article.account button.remove")
