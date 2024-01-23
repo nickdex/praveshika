@@ -4,25 +4,7 @@
 
 (def transactions (local-storage (atom []) :transactions))
 (def payees (local-storage (atom ["Swiggy" "Shoppy Mart" "Zomato" "Shell"]) :payees))
-(def accounts (local-storage (atom ["Assets:Cash"
-                                    "Assets:Checking:Amazon Pay"
-                                    "Assets:Checking:ICICI"
-                                    "Assets:Checking:Paypal"
-                                    "Assets:Checking:Paytm"
-                                    "Assets:Checking:SBI"
-                                    "Assets:Checking:Yes Bank"
-                                    "Assets:Checking:Sodexo-6102"
-                                    "Assets:Deposit"
-                                    "Assets:Equity:BHAAIR"
-                                    "Assets:Equity:BHAINF"
-                                    "Assets:Equity:ONGC"
-                                    "Assets:Equity:YESBAN"
-                                    "Assets:External:SBI-5551"
-                                    "Assets:Insurance:CPP"
-                                    "Assets:Insurance:LIC"
-                                    "Assets:Mutual Fund"
-                                    "Assets:Mutual Fund:SBI Blue Chip RG"
-                                    "Expenses:Education:Books"
+(def accounts (local-storage (atom ["Expenses:Education:Books"
                                     "Expenses:Education:Online Courses"
                                     "Expenses:Entertainment"
                                     "Expenses:Entertainment:Events"
@@ -73,25 +55,7 @@
                                     "Expenses:Utilities:Gas"
                                     "Expenses:Utilities:Home"
                                     "Expenses:Utilities:Internet"
-                                    "Expenses:Utilities:Rent"
-                                    "Income:Business"
-                                    "Income:Cashback"
-                                    "Income:Dividends"
-                                    "Income:Family"
-                                    "Income:Gifts"
-                                    "Income:Interest"
-                                    "Income:Reimbursements"
-                                    "Income:Reversal:Fuel"
-                                    "Income:Rewards"
-                                    "Income:Rewards:Credit Card:ICICI Amazon"
-                                    "Income:Rounding"
-                                    "Income:Salary"
-                                    "Income:Tax Return"
-                                    "Income:Unknown"
-                                    "Liabilities:Credit Card:ICICI Amazon"
-                                    "Liabilities:Credit Card:ICICI Coral"
-                                    "Liabilities:Credit Card:Yes Bank"
-                                    "Liabilities:Loan:Principal"]) :accounts))
+                                    "Expenses:Utilities:Rent"]) :accounts))
 
 (defn make-posting
   ([{:keys [account amount currency comment]}]
