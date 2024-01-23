@@ -83,7 +83,8 @@
         tag (get-value "tag")
         postings (->> (js/document.querySelectorAll "li.posting")
                       (map posting-values!))]
-    (db/make-transaction date payee tag postings)))
+    (-> (db/make-transaction date payee tag postings)
+        (update :postings conj {:account "Assets:Cash"}))))
 
 (defn save-transaction! [event]
   (.. event -target -classList (add "bg-green-500"))
