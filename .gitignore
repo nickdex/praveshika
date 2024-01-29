@@ -13,6 +13,9 @@ node_modules/
 public/js/
 public/css/
 
+# Test generated files
+out/ 
+
 **/dev/user.cljs
 # Local Netlify folder
 .netlify
