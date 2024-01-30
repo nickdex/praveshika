@@ -2,7 +2,8 @@
   (:require-macros [hiccups.core :refer [html]])
   (:require [clojure.string :as str]
             [praveshika.common :as common]
-            [praveshika.db :as db]))
+            [praveshika.db :as db]
+            [praveshika.transaction :as t]))
 
 (defn- account-select []
   [:div.account.relative.mt-2.rounded-md.shadow-sm.relative
@@ -70,7 +71,7 @@
 (defn posting-values! [posting]
   (->> (.querySelectorAll posting "#postings input, #postings select, #postings textarea")
        (map #(.-value %))
-       (apply db/make-posting)))
+       (apply t/make-posting)))
 
 (defn create-transaction
   "Creates a transaction object from view"
@@ -83,7 +84,7 @@
         tag (get-value "tag")
         postings (->> (js/document.querySelectorAll "li.posting")
                       (map posting-values!))]
-    (-> (db/make-transaction date payee tag postings)
+    (-> (t/make-transaction date payee tag postings)
         (update :postings conj {:account "Assets:Cash"}))))
 
 (defn save-transaction! [event]

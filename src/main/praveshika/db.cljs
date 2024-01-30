@@ -1,6 +1,7 @@
 (ns praveshika.db
   (:require
-   [alandipert.storage-atom :refer [local-storage]]))
+   [alandipert.storage-atom :refer [local-storage]]
+   [praveshika.transaction :as t]))
 
 (def transactions (local-storage (atom []) :transactions))
 (def payees (local-storage (atom ["Swiggy" "Shoppy Mart" "Zomato" "Shell"]) :payees))
@@ -57,29 +58,6 @@
                                     "Expenses:Utilities:Internet"
                                     "Expenses:Utilities:Rent"]) :accounts))
 
-(defn make-posting
-  ([{:keys [account amount currency comment]}]
-   (make-posting account amount currency comment))
-  ([account amount currency comment]
-   (merge {:account account}
-          (when (not-empty amount)
-            {:amount (js/parseInt amount)})
-          (when (and (not-empty amount)
-                     (not-empty currency))
-            {:currency currency})
-          (when (not-empty comment)
-            {:comment comment}))))
-
-(defn make-transaction
-  ([transaction]
-   (let [{:keys [date payee tag postings]} transaction]
-     (make-transaction date payee tag (when postings (map make-posting postings)))))
-  ([date payee tag postings]
-   {:date date
-    :payee payee
-    :tag (if (empty? tag) nil tag)
-    :postings (vec postings)}))
-
 (defn get-all-transactions
   "Fetch all transactions from data store"
   []
@@ -87,7 +65,7 @@
        (sort-by :date)
        reverse
        vec
-       (map make-transaction)))
+       (map t/make-transaction)))
 
 (defn remove-element
   [coll element]

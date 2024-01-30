@@ -1,7 +1,8 @@
 (ns praveshika.all
   (:require-macros [hiccups.core :refer [html]])
   (:require [praveshika.common :as common]
-            [praveshika.db :as db]))
+            [praveshika.db :as db]
+            [praveshika.transaction :as t]))
 
 (defn transactions-list-item [transaction]
   (html
@@ -40,10 +41,10 @@
         postings (->> values
                       (drop 3)
                       (partition 4)
-                      (map #(apply db/make-posting %)))
+                      (map #(apply t/make-posting %)))
         transaction (->> postings
                          (conj (vec (take 3 values)))
-                         (apply db/make-transaction))]
+                         (apply t/make-transaction))]
     transaction))
 
 (defn delete-transaction!
